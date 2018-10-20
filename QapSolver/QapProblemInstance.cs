@@ -1,9 +1,16 @@
 namespace QapSolver
 {
-  class QapProblemInstance
+  public class QapProblemInstance
   {
-    public int size;
-    public int[,] facilities;
-    public int[,] locations;
+    public int Size { get; set; }
+    public int[,] Flows { get; set; }
+    public int[,] Distances { get; set; }
+
+    public QapProblemInstance(int size, int[,] flows, int[,] distances)
+    {
+      Size = size;
+      Flows = flows;
+      Distances = distances;
+    }
   }
 }

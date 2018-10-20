@@ -1,14 +1,35 @@
 ﻿using System;
+using System.IO;
+using System.Linq;
 
 namespace QapSolver
 {
   class Program
   {
+
+    static QapFileLoader Loader { get; set; }
+
     static void Main(string[] args)
     {
-      Console.WriteLine("Hello World!");
-      var loader = new QapFileLoader("./Data");
-      var instance = loader.load("bur26a.dat");
+      Loader = new QapFileLoader("./Data");
+      // var fileNames = GetFileNames("./Data");
+      // var anyFile = fileNames[0];
+      TestFile("chr12a.dat");
+    }
+
+    static string[] GetFileNames(string directoryPath)
+    {
+      DirectoryInfo dInfo = new DirectoryInfo(directoryPath);
+      FileInfo[] datFiles = dInfo.GetFiles("*.dat");
+      string[] fileNames = datFiles.Select(d => d.Name).ToArray();
+      return fileNames;
+    }
+
+    static void TestFile(string fileName)
+    {
+      var problemInstance = Loader.Load(fileName);
+      var problemSolution = new QapRandomSolver().Solve(problemInstance);
+      Console.WriteLine($"Done with {problemSolution.Cost}");
     }
   }
 }
