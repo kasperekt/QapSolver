@@ -1,8 +1,9 @@
 using System;
 using System.Linq;
 using System.Runtime.InteropServices;
+using QapSolver;
 
-namespace QapSolver
+namespace QapSolver.Solvers
 {
   static class ArrayExtension
   {
@@ -22,13 +23,14 @@ namespace QapSolver
     }
   }
 
-  class QapRandomSolver : IQapProblem
+  class QapRandomSolver : QapProblemSolver
   {
-    public QapProblemSolution Solve(QapProblemInstance instance)
-    {
-      var assignments = GetAssignments(instance.Size);
-      var cost = GetCost(instance, assignments);
+    public QapRandomSolver(QapProblemInstance instance) : base(instance) { }
 
+    public override QapProblemSolution Solve()
+    {
+      var assignments = GetAssignments(Instance.Size);
+      var cost = GetCost(assignments);
       return new QapProblemSolution(assignments, cost);
     }
 
@@ -37,22 +39,6 @@ namespace QapSolver
       var assignments = Enumerable.Range(0, n).Select(s => s).ToArray();
       assignments.Shuffle();
       return assignments;
-    }
-
-    private int GetCost(QapProblemInstance instance, int[] assignments)
-    {
-      int sum = 0;
-
-      for (int i = 0; i < instance.Size; i++)
-      {
-        for (int j = 0; j < instance.Size; j++)
-        {
-          if (i == j) continue;
-          sum += instance.Flows[i, j] * instance.Distances[assignments[i], assignments[j]];
-        }
-      }
-
-      return sum;
     }
   }
 }

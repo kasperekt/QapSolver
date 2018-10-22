@@ -1,12 +1,12 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using QapSolver.Solvers;
 
 namespace QapSolver
 {
   class Program
   {
-
     static QapFileLoader Loader { get; set; }
 
     static void Main(string[] args)
@@ -28,7 +28,10 @@ namespace QapSolver
     static void TestFile(string fileName)
     {
       var problemInstance = Loader.Load(fileName);
-      var problemSolution = new QapRandomSolver().Solve(problemInstance);
+
+      var randomSolver = new QapRandomSolver(problemInstance);
+      var problemSolution = randomSolver.Solve();
+
       Console.WriteLine($"Done with {problemSolution.Cost}");
     }
   }
