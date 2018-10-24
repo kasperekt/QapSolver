@@ -25,13 +25,36 @@ namespace QapSolver.Solvers
 
   class QapRandomSolver : QapProblemSolver
   {
-    public QapRandomSolver(QapProblemInstance instance) : base(instance) { }
+    public int Rounds { get; set; }
+
+    public QapRandomSolver(QapProblemInstance instance) : base(instance)
+    {
+      Rounds = 100;
+    }
+
+    public QapRandomSolver(QapProblemInstance instance, int rounds) : base(instance)
+    {
+      Rounds = rounds;
+    }
 
     public override QapProblemSolution Solve()
     {
-      var assignments = GetAssignments(Instance.Size);
-      var cost = GetCost(assignments);
-      return new QapProblemSolution(assignments, cost);
+      int bestCost = int.MaxValue;
+      int[] bestAssignments = null;
+
+      for (int it = 0; it < Rounds; it++)
+      {
+        var assignments = GetAssignments(Instance.Size);
+        var cost = GetCost(assignments);
+
+        if (cost < bestCost)
+        {
+          bestCost = cost;
+          bestAssignments = assignments;
+        }
+      }
+
+      return new QapProblemSolution(bestAssignments, bestCost);
     }
 
     private int[] GetAssignments(int n)
