@@ -2,6 +2,7 @@ namespace QapSolver
 {
   public class QapProblemInstance
   {
+    public string Name { get; set; }
     public int Size { get; set; }
     public int[,] Flows { get; set; }
     public int[,] Distances { get; set; }

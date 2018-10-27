@@ -9,3 +9,7 @@ Run Task → Run
 ```
 $ dotnet run
 ```
+
+### Podobieństwo
+
+Im więcej kawałków wnosi do f. celu, tym bardziej permutacje/rozwiazania są podobne (???)

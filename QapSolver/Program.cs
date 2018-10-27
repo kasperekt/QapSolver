@@ -13,9 +13,8 @@ namespace QapSolver
     {
       Loader = new QapFileLoader("./Data");
       var fileNames = GetFileNames("./Data");
-      TestFile("chr12a.dat");
       // TestAllFiles(fileNames);
-      // var anyFile = fileNames[0];
+      TestFile("tai35b.dat");
     }
 
     static string[] GetFileNames(string directoryPath)
@@ -33,8 +32,8 @@ namespace QapSolver
       {
         Console.WriteLine($"----- {fileName} (Rounds: {rounds}) -----");
         var problemInstance = Loader.Load(fileName);
-        var solver = new QapRandomSolver(problemInstance, rounds);
-        Console.WriteLine($"Cost = {solver.Solve().Cost}");
+        var solver = new QapRandomSolver(problemInstance);
+        Console.WriteLine($"Cost = {solver.SolveNTimes(rounds).Cost}");
       }
     }
 
@@ -42,8 +41,9 @@ namespace QapSolver
     {
       var problemInstance = Loader.Load(fileName);
 
-      var randomSolver = new QapRandomSolver(problemInstance, 1000);
-      var problemSolution = randomSolver.Solve();
+      // var solver = new QapRandomSolver(problemInstance, 1000);
+      var solver = new QapLocalSolverGreedy(problemInstance);
+      var problemSolution = solver.SolveNTimes(1000);
 
       Console.WriteLine($"Cost = {problemSolution.Cost}");
     }

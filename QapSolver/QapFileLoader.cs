@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Collections.Generic;
 using QapSolver.Solvers;
 
 namespace QapSolver
@@ -29,11 +30,19 @@ namespace QapSolver
 
         for (int i = 0; i < size; i++)
         {
-          var lines = sr.ReadLine().Split(new char[] { }, StringSplitOptions.RemoveEmptyEntries);
+          var allLines = new List<int>();
+          while (allLines.Count < size)
+          {
+            var lines = sr.ReadLine().Split(new char[] { }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var element in lines)
+            {
+              allLines.Add(Int32.Parse(element));
+            }
+          }
 
           for (int j = 0; j < size; j++)
           {
-            flows[i, j] = Int32.Parse(lines[j]);
+            flows[i, j] = allLines[j];
           }
         }
 
@@ -41,11 +50,19 @@ namespace QapSolver
 
         for (int i = 0; i < size; i++)
         {
-          var lines = sr.ReadLine().Split(new char[] { }, StringSplitOptions.RemoveEmptyEntries);
+          var allLines = new List<int>();
+          while (allLines.Count < size)
+          {
+            var lines = sr.ReadLine().Split(new char[] { }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var element in lines)
+            {
+              allLines.Add(Int32.Parse(element));
+            }
+          }
 
           for (int j = 0; j < size; j++)
           {
-            distances[i, j] = Int32.Parse(lines[j]);
+            distances[i, j] = allLines[j];
           }
         }
 

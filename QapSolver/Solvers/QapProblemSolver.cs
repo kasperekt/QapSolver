@@ -1,5 +1,8 @@
 using System;
+using System.Linq;
+using System.Runtime.InteropServices;
 using QapSolver;
+using ArrayExtensions;
 
 namespace QapSolver.Solvers
 {
@@ -15,6 +18,23 @@ namespace QapSolver.Solvers
     /// Should set value to Solution variable 
     public abstract QapProblemSolution Solve();
 
+    public QapProblemSolution SolveNTimes(int n)
+    {
+      QapProblemSolution bestSolution = Solve();
+
+      for (int i = 0; i < n; i++)
+      {
+        var solution = Solve();
+
+        if (solution.Cost < bestSolution.Cost)
+        {
+          bestSolution = solution;
+        }
+      }
+
+      return bestSolution;
+    }
+
     protected int GetCost(int[] assignments)
     {
       int sum = 0;
@@ -29,6 +49,13 @@ namespace QapSolver.Solvers
       }
 
       return sum;
+    }
+
+    protected int[] GetRandomAssignments(int size)
+    {
+      var assignments = Enumerable.Range(0, size).Select(s => s).ToArray();
+      assignments.Shuffle();
+      return assignments;
     }
   }
 }
