@@ -7,6 +7,10 @@ namespace QapSolver.Solvers
 {
   class QapRandomSolver : QapProblemSolver
   {
+    public override string Name
+    {
+      get { return "random-solver"; }
+    }
 
     public QapRandomSolver(QapProblemInstance instance) : base(instance)
     {

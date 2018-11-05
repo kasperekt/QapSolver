@@ -9,6 +9,7 @@ namespace QapSolver.Solvers
   abstract class QapProblemSolver
   {
     public QapProblemInstance Instance { get; private set; }
+    public abstract string Name { get; }
 
     public QapProblemSolver(QapProblemInstance instance)
     {
@@ -25,6 +26,24 @@ namespace QapSolver.Solvers
       for (int i = 0; i < n; i++)
       {
         var solution = Solve();
+
+        if (solution.Cost < bestSolution.Cost)
+        {
+          bestSolution = solution;
+        }
+      }
+
+      return bestSolution;
+    }
+
+    public QapProblemSolution SolveNTimes(int n, ref QapResultsWriter writer)
+    {
+      QapProblemSolution bestSolution = Solve();
+
+      for (int i = 0; i < n; i++)
+      {
+        var solution = Solve();
+        writer.WriteSolution(solution: ref solution);
 
         if (solution.Cost < bestSolution.Cost)
         {

@@ -13,8 +13,9 @@ namespace QapSolver
     {
       Loader = new QapFileLoader("./Data");
       var fileNames = GetFileNames("./Data");
-      // TestAllFiles(fileNames);
-      TestFile("tai12a.dat");
+      // TestAllFiles(fileNames.Take(3).ToArray());
+      TestAllFiles(new string[] { "chr20a.dat", "bur26a.dat" });
+      // TestFile("tai12a.dat");
     }
 
     static string[] GetFileNames(string directoryPath)
@@ -27,21 +28,33 @@ namespace QapSolver
 
     static void TestAllFiles(string[] fileNames)
     {
-      int rounds = 500;
       foreach (var fileName in fileNames)
       {
-        Console.WriteLine($"----- {fileName} (Rounds: {rounds}) -----");
-        var problemInstance = Loader.Load(fileName);
-        var solver = new QapLocalSolverGreedy(problemInstance);
-        Console.WriteLine($"Cost = {solver.SolveNTimes(rounds).Cost}");
+        int[] differentRounds = { 200, 250, 300, 350, 400 };
+        foreach (var rounds in differentRounds)
+        {
+          Console.WriteLine($"----- {fileName} (Rounds: {rounds}) -----");
+          var problemInstance = Loader.Load(fileName);
+
+          QapProblemSolver[] solvers = {
+            new QapRandomSolver(problemInstance),
+            new QapLocalSolverGreedy(problemInstance),
+            new QapLocalSolverSteepest(problemInstance)
+          };
+
+          foreach (var solver in solvers)
+          {
+            // var solver = new QapLocalSolverGreedy(problemInstance);
+            string resultsFileName = $"results/{solver.Name}-{rounds}.csv";
+            Console.WriteLine($"Cost = {solver.SolveNTimes(rounds).Cost}");
+          }
+        }
       }
     }
 
     static void TestFile(string fileName)
     {
       var problemInstance = Loader.Load(fileName);
-      // var solver = new QapRandomSolver(problemInstance, 1000);
-      // var solver = new QapLocalSolverGreedy(problemInstance);
       var solver = new QapLocalSolverSteepest(problemInstance);
       var problemSolution = solver.SolveNTimes(500);
 

@@ -7,6 +7,11 @@ namespace QapSolver.Solvers
 {
   class QapLocalSolverSteepest : QapProblemSolver
   {
+    public override string Name
+    {
+      get { return "local-steepest-solver"; }
+    }
+
     public QapLocalSolverSteepest(QapProblemInstance instance) : base(instance) { }
 
     public override QapProblemSolution Solve()
@@ -36,7 +41,7 @@ namespace QapSolver.Solvers
         }
       }
 
-      return new QapProblemSolution(assignments, cost);
+      return new QapProblemSolution(assignments, cost, iterationCounter);
     }
 
     private List<int[]> GetNeighbours(int[] assignments)
