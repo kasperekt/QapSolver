@@ -12,6 +12,7 @@ namespace QapSolver.Solvers
     {
       get { return "heuristic-solver"; }
     }
+    private int IterationLimit = 1000;
 
     public QapHeuristicSolver(QapProblemInstance instance) : base(instance) { }
 
@@ -24,7 +25,7 @@ namespace QapSolver.Solvers
       bool progress = true;
       int iterationCounter = 0;
 
-      while (progress)
+      while (progress && iterationCounter < IterationLimit)
       {
         progress = false;
         iterationCounter++;
