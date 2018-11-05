@@ -59,8 +59,8 @@ namespace QapSolver
 
       sr.Close();
 
-      return new QapProblemInstance(size, flows, distances);
-
+      string instanceName = name.Split(new char[] { '.' })[0];
+      return new QapProblemInstance(instanceName, size, flows, distances);
     }
   }
 }

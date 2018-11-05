@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using QapSolver;
 using ArrayExtensions;
 
@@ -16,10 +17,13 @@ namespace QapSolver.Solvers
 
     public override QapProblemSolution Solve()
     {
+      var watch = System.Diagnostics.Stopwatch.StartNew();
+
       var assignments = GetRandomAssignments(Instance.Size);
       var cost = GetCost(assignments);
       bool progress = true;
       int iterationCounter = 0;
+      int visited = 0;
 
       while (progress)
       {
@@ -31,6 +35,7 @@ namespace QapSolver.Solvers
         foreach (var neighbour in neighbours)
         {
           var neighbourCost = GetCost(neighbour);
+          visited++;
 
           if (neighbourCost < cost)
           {
@@ -42,17 +47,28 @@ namespace QapSolver.Solvers
         }
       }
 
-      return new QapProblemSolution(assignments, cost, iterationCounter);
+      watch.Stop();
+
+      return new QapProblemSolution(
+        assignments,
+        cost,
+        iterationCounter,
+        visited,
+        watch.ElapsedMilliseconds
+      );
     }
 
     public override QapProblemSolution SolveFast()
     {
+      var watch = System.Diagnostics.Stopwatch.StartNew();
+
       var assignments = GetRandomAssignments(Instance.Size);
       var cost = GetCost(assignments);
       CalcDeltaTable(assignments);
 
       bool progress = true;
       int iterationCounter = 0;
+      int visited = 0;
 
       while (progress)
       {
@@ -63,6 +79,8 @@ namespace QapSolver.Solvers
 
         foreach (var (i, j) in swaps)
         {
+          visited++;
+
           if (DeltaTable[i, j] < 0)
           {
             assignments.Swap(i, j);
@@ -74,7 +92,15 @@ namespace QapSolver.Solvers
         }
       }
 
-      return new QapProblemSolution(assignments, cost, iterationCounter);
+      watch.Stop();
+
+      return new QapProblemSolution(
+        assignments,
+        cost,
+        iterationCounter,
+        visited,
+        watch.ElapsedMilliseconds
+      );
     }
 
     private List<int[]> GetNeighbours(int[] assignments)

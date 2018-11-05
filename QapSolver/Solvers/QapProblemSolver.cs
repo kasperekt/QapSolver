@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Collections.Generic;
+using System.Diagnostics;
 using QapSolver;
 using ArrayExtensions;
 
@@ -46,7 +47,7 @@ namespace QapSolver.Solvers
       for (int i = 0; i < n; i++)
       {
         var solution = SolveFast();
-        writer.WriteSolution(solution: ref solution);
+        writer.WriteResultLine(solution: ref solution);
 
         if (solution.Cost < bestSolution.Cost)
         {
@@ -108,6 +109,7 @@ namespace QapSolver.Solvers
              gSum;
     }
 
+    /// TODO
     protected void CalcDeltaSwap(int[] assignments, int i, int j)
     {
       int ijSwap = -DeltaTable[i, j];

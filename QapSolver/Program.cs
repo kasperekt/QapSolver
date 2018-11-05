@@ -13,7 +13,7 @@ namespace QapSolver
     {
       Loader = new QapFileLoader("./Data");
       var fileNames = GetFileNames("./Data");
-      TestAllFiles(new string[] { "nug30.dat", "nug25.dat" });
+      TestAllFiles(fileNames);
     }
 
     static string[] GetFileNames(string directoryPath)
@@ -28,10 +28,10 @@ namespace QapSolver
     {
       foreach (var fileName in fileNames)
       {
-        int[] differentRounds = { 200, 250, 300, 350, 400 };
+        int[] differentRounds = { 100, 150, 200, 250, 300 };
+
         foreach (var rounds in differentRounds)
         {
-          Console.WriteLine($"----- {fileName} (Rounds: {rounds}) -----");
           var problemInstance = Loader.Load(fileName);
 
           QapProblemSolver[] solvers = {
@@ -42,10 +42,15 @@ namespace QapSolver
 
           foreach (var solver in solvers)
           {
-            // var solver = new QapLocalSolverGreedy(problemInstance);
-            string resultsFileName = $"results/{solver.Name}-{rounds}.csv";
-            var solution = solver.SolveNTimes(rounds);
-            Console.WriteLine($"Cost = {solution.Cost}");
+            string csvFileName = $"results/{problemInstance.Name}_{solver.Name}_{rounds}.csv";
+            string slnFileName = $"results/{problemInstance.Name}_{solver.Name}_{rounds}.sln";
+
+            QapResultsWriter resultsWriter = new QapResultsWriter(csvFileName);
+            var solution = solver.SolveNTimes(rounds, ref resultsWriter);
+            resultsWriter.CloseWriter();
+
+            QapSolutionWriter.WriteSolution(slnFileName, problemInstance, solution);
+            Console.WriteLine($"({problemInstance.Name}, {solver.Name}): Rounds = {rounds}, Cost = {solution.Cost}");
           }
         }
       }

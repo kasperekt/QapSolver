@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 
 namespace QapSolver
 {
@@ -13,25 +14,28 @@ namespace QapSolver
     {
       Path = path;
       Writer = new StreamWriter(path);
-      Writer.WriteLine("i,cost");
+      Writer.WriteLine("i,cost,steps,visited,time,permutation");
     }
 
-    ~QapResultsWriter()
+    public void CloseWriter()
     {
-      if (Writer != null)
-      {
-        Writer.Close();
-      }
+      Writer.Close();
     }
 
-    public void WriteSolution(ref QapProblemSolution solution)
+    public void WriteResultLine(ref QapProblemSolution solution)
     {
       if (Writer == null)
       {
         return;
       }
 
-      string line = $"{Counter++},{solution.Cost}";
+      string permutation = string.Join("-",
+        solution.Solution
+          .Select(s => (s + 1).ToString())
+          .ToArray()
+      );
+
+      string line = $"{Counter++},{solution.Cost},{solution.Steps},{solution.Visited},{solution.TimeMs},{permutation}";
       Writer.WriteLine(line);
     }
   }
