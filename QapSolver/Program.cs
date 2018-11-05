@@ -36,6 +36,7 @@ namespace QapSolver
 
           QapProblemSolver[] solvers = {
             new QapRandomSolver(problemInstance),
+            new QapHeuristicSolver(problemInstance),
             new QapLocalSolverGreedy(problemInstance),
             new QapLocalSolverSteepest(problemInstance)
           };
