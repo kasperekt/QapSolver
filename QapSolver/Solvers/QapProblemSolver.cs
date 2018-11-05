@@ -21,33 +21,20 @@ namespace QapSolver.Solvers
 
     /// Should set value to Solution variable 
     public abstract QapProblemSolution Solve();
-    public abstract QapProblemSolution SolveFast();
 
     public QapProblemSolution SolveNTimes(int n)
     {
-      QapProblemSolution bestSolution = SolveFast();
-
-      for (int i = 0; i < n; i++)
-      {
-        var solution = SolveFast();
-
-        if (solution.Cost < bestSolution.Cost)
-        {
-          bestSolution = solution;
-        }
-      }
-
-      return bestSolution;
+      return SolveNTimes(n, null);
     }
 
-    public QapProblemSolution SolveNTimes(int n, ref QapResultsWriter writer)
+    public QapProblemSolution SolveNTimes(int n, QapResultsWriter writer)
     {
-      QapProblemSolution bestSolution = SolveFast();
+      QapProblemSolution bestSolution = Solve();
 
       for (int i = 0; i < n; i++)
       {
-        var solution = SolveFast();
-        writer.WriteResultLine(solution: ref solution);
+        var solution = Solve();
+        writer?.WriteResultLine(solution: ref solution);
 
         if (solution.Cost < bestSolution.Cost)
         {

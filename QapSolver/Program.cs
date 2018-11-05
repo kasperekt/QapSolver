@@ -46,7 +46,7 @@ namespace QapSolver
             string slnFileName = $"results/{problemInstance.Name}_{solver.Name}_{rounds}.sln";
 
             QapResultsWriter resultsWriter = new QapResultsWriter(csvFileName);
-            var solution = solver.SolveNTimes(rounds, ref resultsWriter);
+            var solution = solver.SolveNTimes(rounds, resultsWriter);
             resultsWriter.CloseWriter();
 
             QapSolutionWriter.WriteSolution(slnFileName, problemInstance, solution);
@@ -54,15 +54,6 @@ namespace QapSolver
           }
         }
       }
-    }
-
-    static void TestFile(string fileName)
-    {
-      var problemInstance = Loader.Load(fileName);
-      var solver = new QapLocalSolverSteepest(problemInstance);
-      var problemSolution = solver.SolveNTimes(500);
-
-      Console.WriteLine($"Cost = {problemSolution.Cost}");
     }
   }
 }

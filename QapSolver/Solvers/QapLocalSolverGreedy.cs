@@ -21,49 +21,6 @@ namespace QapSolver.Solvers
 
       var assignments = GetRandomAssignments(Instance.Size);
       var cost = GetCost(assignments);
-      bool progress = true;
-      int iterationCounter = 0;
-      int visited = 0;
-
-      while (progress)
-      {
-        progress = false;
-        iterationCounter++;
-
-        var neighbours = GetNeighbours(assignments);
-
-        foreach (var neighbour in neighbours)
-        {
-          var neighbourCost = GetCost(neighbour);
-          visited++;
-
-          if (neighbourCost < cost)
-          {
-            assignments = neighbour;
-            cost = neighbourCost;
-            progress = true;
-            break;
-          }
-        }
-      }
-
-      watch.Stop();
-
-      return new QapProblemSolution(
-        assignments,
-        cost,
-        iterationCounter,
-        visited,
-        watch.ElapsedMilliseconds
-      );
-    }
-
-    public override QapProblemSolution SolveFast()
-    {
-      var watch = System.Diagnostics.Stopwatch.StartNew();
-
-      var assignments = GetRandomAssignments(Instance.Size);
-      var cost = GetCost(assignments);
       CalcDeltaTable(assignments);
 
       bool progress = true;

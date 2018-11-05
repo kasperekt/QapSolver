@@ -22,10 +22,5 @@ namespace QapSolver.Solvers
       var cost = GetCost(assignments);
       return new QapProblemSolution(assignments, cost);
     }
-
-    public override QapProblemSolution SolveFast()
-    {
-      return Solve();
-    }
   }
 }
