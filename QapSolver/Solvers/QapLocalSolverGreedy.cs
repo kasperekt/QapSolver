@@ -45,6 +45,38 @@ namespace QapSolver.Solvers
       return new QapProblemSolution(assignments, cost, iterationCounter);
     }
 
+    public override QapProblemSolution SolveFast()
+    {
+      var assignments = GetRandomAssignments(Instance.Size);
+      var cost = GetCost(assignments);
+      CalcDeltaTable(assignments);
+
+      bool progress = true;
+      int iterationCounter = 0;
+
+      while (progress)
+      {
+        progress = false;
+        iterationCounter++;
+
+        var swaps = GetSwaps();
+
+        foreach (var (i, j) in swaps)
+        {
+          if (DeltaTable[i, j] < 0)
+          {
+            assignments.Swap(i, j);
+            cost += DeltaTable[i, j];
+            CalcDeltaTable(assignments);
+            progress = true;
+            break;
+          }
+        }
+      }
+
+      return new QapProblemSolution(assignments, cost, iterationCounter);
+    }
+
     private List<int[]> GetNeighbours(int[] assignments)
     {
       List<int[]> neighbours = new List<int[]>();

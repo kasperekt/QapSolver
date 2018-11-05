@@ -13,9 +13,7 @@ namespace QapSolver
     {
       Loader = new QapFileLoader("./Data");
       var fileNames = GetFileNames("./Data");
-      // TestAllFiles(fileNames.Take(3).ToArray());
-      TestAllFiles(new string[] { "chr20a.dat", "bur26a.dat" });
-      // TestFile("tai12a.dat");
+      TestAllFiles(new string[] { "nug30.dat", "nug25.dat" });
     }
 
     static string[] GetFileNames(string directoryPath)
@@ -46,7 +44,8 @@ namespace QapSolver
           {
             // var solver = new QapLocalSolverGreedy(problemInstance);
             string resultsFileName = $"results/{solver.Name}-{rounds}.csv";
-            Console.WriteLine($"Cost = {solver.SolveNTimes(rounds).Cost}");
+            var solution = solver.SolveNTimes(rounds);
+            Console.WriteLine($"Cost = {solution.Cost}");
           }
         }
       }
