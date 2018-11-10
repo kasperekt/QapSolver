@@ -14,7 +14,7 @@ namespace QapSolver
     {
       Path = path;
       Writer = new StreamWriter(path);
-      Writer.WriteLine("i,cost,steps,visited,time,permutation");
+      Writer.WriteLine("i,initialCost,cost,steps,visited,time,permutation");
     }
 
     public void CloseWriter()
@@ -35,7 +35,7 @@ namespace QapSolver
           .ToArray()
       );
 
-      string line = $"{Counter++},{solution.Cost},{solution.Steps},{solution.Visited},{solution.TimeMs},{permutation}";
+      string line = $"{Counter++},{solution.InitialCost},{solution.Cost},{solution.Steps},{solution.Visited},{solution.TimeMs},{permutation}";
       Writer.WriteLine(line);
     }
   }

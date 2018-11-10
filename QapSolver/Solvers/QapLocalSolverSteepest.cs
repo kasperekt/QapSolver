@@ -21,6 +21,7 @@ namespace QapSolver.Solvers
 
       var assignments = GetRandomAssignments(Instance.Size);
       var cost = GetCost(assignments);
+      var initialCost = cost;
       CalcDeltaTable(assignments);
 
       bool progress = true;
@@ -60,6 +61,7 @@ namespace QapSolver.Solvers
 
       return new QapProblemSolution(
         assignments,
+        initialCost,
         cost,
         iterationCounter,
         visited,

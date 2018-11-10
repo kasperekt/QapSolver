@@ -18,9 +18,9 @@ namespace QapSolver.Solvers
     public override QapProblemSolution Solve()
     {
       var watch = System.Diagnostics.Stopwatch.StartNew();
-
       var assignments = GetRandomAssignments(Instance.Size);
       var cost = GetCost(assignments);
+      var initialCost = cost;
       CalcDeltaTable(assignments);
 
       bool progress = true;
@@ -53,6 +53,7 @@ namespace QapSolver.Solvers
 
       return new QapProblemSolution(
         assignments,
+        initialCost,
         cost,
         iterationCounter,
         visited,

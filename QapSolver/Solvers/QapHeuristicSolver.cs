@@ -22,6 +22,7 @@ namespace QapSolver.Solvers
 
       // TODO: Here!!!
       var assignments = GetRandomAssignments(Instance.Size);
+      var initialCost = GetCost(assignments);
       bool progress = true;
       int iterationCounter = 0;
 
@@ -44,6 +45,7 @@ namespace QapSolver.Solvers
 
       return new QapProblemSolution(
         solution: assignments,
+        initialCost: initialCost,
         cost: GetCost(assignments),
         steps: iterationCounter,
         visited: iterationCounter,
