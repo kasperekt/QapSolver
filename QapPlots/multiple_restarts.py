@@ -38,7 +38,7 @@ def get_results(file):
         avg.append(score)
         continue
 
-    if score > best[i-2]:
+    if score < best[i-2]:
         best.append(score)
     else:
         best.append(best[i-2])
