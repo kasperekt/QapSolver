@@ -3,6 +3,7 @@ import numpy as np
 import re
 
 from helpers import quality
+from config import chart_size, chart_dpi
 
 
 def get_optimum(file):
@@ -53,7 +54,7 @@ all_problems = ['chr18a', 'chr20a', 'esc32g',
                 'lipa50a', 'tai12a', 'tai12b', 'tai15a', 'tai35b']
 selected_problems = ['chr18a', 'esc32g', 'lipa50a', 'tai12a', 'tai12b']
 size = 200
-plt.figure(figsize=(15, 10))
+plt.figure(figsize=chart_size, dpi=chart_dpi)
 
 for problem in selected_problems:
     optimal_score = get_optimum('../QapData/' + problem + '.sln')
@@ -77,4 +78,4 @@ for problem in selected_problems:
 plt.xlabel('Jakość rozwiązania początkowego')
 plt.ylabel('Jakość rozwiązania końcowego')
 plt.legend()
-plt.savefig('initial_vs_final.png')
+plt.savefig('initial_vs_final.png', dpi=chart_dpi)

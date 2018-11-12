@@ -3,6 +3,7 @@ import numpy as np
 import re
 
 from helpers import quality
+from config import chart_size, chart_dpi
 
 
 def similarity_percentage(solution, optimal):
@@ -68,7 +69,7 @@ all_problems = ['chr18a', 'chr20a', 'esc32g',
                 'lipa50a', 'tai12a', 'tai12b', 'tai15a', 'tai35b']
 selected_problems = ['chr18a', 'chr20a']
 size = 300
-plt.figure(figsize=(15, 10))
+plt.figure(figsize=chart_size, dpi=chart_dpi)
 
 x = np.arange(1, 301, 1)
 
@@ -95,4 +96,4 @@ for problem in selected_problems:
 plt.xlabel('jakość rozwiązania')
 plt.ylabel('podobieństwo do optimum')
 plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), mode='expand', ncol=4, loc=3)
-plt.savefig('quality_vs_similarity.png')
+plt.savefig('quality_vs_similarity.png', dpi=chart_dpi)

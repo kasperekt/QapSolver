@@ -3,6 +3,7 @@ import numpy as np
 import re
 
 from helpers import quality
+from config import chart_size, chart_dpi
 
 
 def get_optimum(file):
@@ -67,7 +68,7 @@ all_problems = ['chr18a', 'chr20a', 'esc32g',
                 'lipa50a', 'tai12a', 'tai12b', 'tai15a', 'tai35b']
 selected_problems = ['tai12a', 'tai35b']
 size = 300
-plt.figure(figsize=(15, 10))
+plt.figure(figsize=chart_size, dpi=chart_dpi)
 
 x = np.arange(1, 301, 1)
 
@@ -95,4 +96,4 @@ for problem in selected_problems:
 plt.xlabel('liczba iteracji')
 plt.ylabel('jakość rozwiązania')
 plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), mode='expand', ncol=4, loc=3)
-plt.savefig('multiple_restarts.png')
+plt.savefig('multiple_restarts.png', dpi=chart_dpi)
