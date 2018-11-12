@@ -2,6 +2,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import re
 
+from helpers import quality
+
 
 def get_optimum(file):
     with open(file, 'r') as fh:
@@ -17,10 +19,6 @@ def parse_optimal_solution(data):
     optimal_perm = data[1].split(' ')[1:-1]
 
     return optimal_result, optimal_perm
-
-
-def quality(solution, optimal):
-    return 1 - ((solution - optimal) / solution)
 
 
 def get_results(file):

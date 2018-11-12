@@ -2,6 +2,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import re
 
+from helpers import quality
+
 
 def similarity_percentage(solution, optimal):
     count = 0
@@ -40,10 +42,6 @@ def parse_optimal_solution(data):
     optimal_perm = data[1].split(' ')[1:-1]
 
     return optimal_result, optimal_perm
-
-
-def quality(solution, optimal):
-    return 1 - ((solution - optimal) / solution)
 
 
 algs = {
