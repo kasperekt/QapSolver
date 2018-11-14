@@ -13,7 +13,7 @@ def similarity_percentage(solution, optimal):
         if s_el == o_el:
             count += 1
 
-    return 0 if count == 0 else len(solution) / count
+    return count / len(solution)
 
 
 def get_optimum(file):
