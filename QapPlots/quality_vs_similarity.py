@@ -13,7 +13,6 @@ def similarity_percentage(solution, optimal):
         if s_el == o_el:
             count += 1
 
-    print(count, len(solution) / count if count != 0 else 0)
     return 0 if count == 0 else len(solution) / count
 
 
@@ -40,7 +39,7 @@ def parse_optimal_solution(data):
     data = re.sub(' +', ' ', data).split('\n')
 
     optimal_result = int(data[0].split(' ')[2])
-    optimal_perm = data[1].split(' ')[0:-1]
+    optimal_perm = data[1].strip().split(' ')
 
     return optimal_result, optimal_perm
 
