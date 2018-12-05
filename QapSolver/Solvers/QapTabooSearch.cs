@@ -40,7 +40,7 @@ namespace QapSolver.Solvers
             var bestAssignments = GetRandomAssignments(Instance.Size);
             var bestCost = GetCost(bestAssignments);
             
-            var tabooList = new TabooList(1);
+            var tabooList = new TabooList(5);
             var bestCandidateAssignments = bestAssignments.Clone() as int[];
             var bestCandidateCost = bestCost;
             CalcDeltaTable(bestCandidateAssignments);   
@@ -49,25 +49,33 @@ namespace QapSolver.Solvers
             {
                 attempts += 1;
                 var swaps = GetSwaps();
+                (int, int)? bestSwap = null;
                 
-                foreach (var (swapI, swapJ) in swaps)
+                foreach (var swap in swaps)
                 {
-                    var deltaSwapValue = DeltaTable[swapI, swapJ];
-                    if (!tabooList.Has((swapI, swapJ)) && deltaSwapValue < 0)
+                    var deltaSwapValue = DeltaTable[swap.Item1, swap.Item2];
+                    
+                    if (!tabooList.Has(swap) && deltaSwapValue < 0)
                     {
-                        bestCandidateAssignments.Swap(swapI, swapJ);
+                        bestSwap = swap;
+                        bestCandidateAssignments.Swap(swap.Item1, swap.Item2);
                         bestCandidateCost += deltaSwapValue;
                         CalcDeltaTable(bestCandidateAssignments);
                     }
-                    
-                    tabooList.Add((swapI, swapJ));
+                }
 
-                    if (bestCost > bestCandidateCost)
-                    {
-                        bestAssignments = bestCandidateAssignments.Clone() as int[];
-                        bestCost = bestCandidateCost;
-                        attempts = 0;
-                    }
+                if (!bestSwap.HasValue)
+                {
+                    continue;
+                }
+                
+                tabooList.Add(bestSwap.Value);
+
+                if (bestCost > bestCandidateCost && bestCandidateAssignments != null)
+                {
+                    bestAssignments = bestCandidateAssignments.Clone() as int[];
+                    bestCost = bestCandidateCost;
+                    attempts = 0;
                 }
             }
             
