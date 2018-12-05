@@ -1,30 +1,23 @@
-using System;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
-using System.Linq;
 using ArrayExtensions;
 
 namespace QapSolver.Solvers
 {
   class QapHeuristicSolver : QapProblemSolver
   {
-    public override string Name
-    {
-      get { return "heuristic-solver"; }
-    }
+    public override string Name => "heuristic-solver";
     private int IterationLimit = 1000;
 
     public QapHeuristicSolver(QapProblemInstance instance) : base(instance) { }
 
-    public override QapProblemSolution Solve()
+    protected override QapProblemSolution Solve()
     {
-      var watch = System.Diagnostics.Stopwatch.StartNew();
+      var watch = Stopwatch.StartNew();
 
-      // TODO: Here!!!
       var assignments = GetRandomAssignments(Instance.Size);
       var initialCost = GetCost(assignments);
-      bool progress = true;
-      int iterationCounter = 0;
+      var progress = true;
+      var iterationCounter = 0;
 
       while (progress && iterationCounter < IterationLimit)
       {
@@ -58,7 +51,7 @@ namespace QapSolver.Solvers
       var bestReplacement = i;
       var bestReplacementCost = int.MaxValue;
 
-      for (int j = 0; j < Instance.Size; j++)
+      for (var j = 0; j < Instance.Size; j++)
       {
         var nextAssignments = (assignments.Clone() as int[]);
         nextAssignments.Swap(i, j);
@@ -76,16 +69,15 @@ namespace QapSolver.Solvers
 
     private int GetWorstIndex(int[] assignments)
     {
-      int size = Instance.Size;
+      var size = Instance.Size;
+      var worstIdx = 0;
+      var worstValue = int.MinValue;
 
-      int worstIdx = 0;
-      int worstValue = int.MinValue;
-
-      for (int i = 0; i < size; i++)
+      for (var i = 0; i < size; i++)
       {
         var iValue = 0;
 
-        for (int j = 0; j < size; j++)
+        for (var j = 0; j < size; j++)
         {
           if (i == j)
           {

@@ -15,7 +15,7 @@ namespace QapSolver.Solvers
 
     public QapLocalSolverGreedy(QapProblemInstance instance) : base(instance) { }
 
-    public override QapProblemSolution Solve()
+    protected override QapProblemSolution Solve()
     {
       var watch = System.Diagnostics.Stopwatch.StartNew();
       var assignments = GetRandomAssignments(Instance.Size);
@@ -63,11 +63,11 @@ namespace QapSolver.Solvers
 
     private List<int[]> GetNeighbours(int[] assignments)
     {
-      List<int[]> neighbours = new List<int[]>();
+      var neighbours = new List<int[]>();
 
-      for (int i = 0; i < assignments.Length; i++)
+      for (var i = 0; i < assignments.Length; i++)
       {
-        for (int j = i + 1; j < assignments.Length; j++)
+        for (var j = i + 1; j < assignments.Length; j++)
         {
           var neighbour = (assignments.Clone() as int[]);
           neighbour.Swap(i, j);

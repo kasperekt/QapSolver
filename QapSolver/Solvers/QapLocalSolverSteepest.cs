@@ -15,7 +15,7 @@ namespace QapSolver.Solvers
 
     public QapLocalSolverSteepest(QapProblemInstance instance) : base(instance) { }
 
-    public override QapProblemSolution Solve()
+    protected override QapProblemSolution Solve()
     {
       var watch = System.Diagnostics.Stopwatch.StartNew();
 

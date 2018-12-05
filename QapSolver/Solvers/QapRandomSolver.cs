@@ -16,7 +16,7 @@ namespace QapSolver.Solvers
     {
     }
 
-    public override QapProblemSolution Solve()
+    protected override QapProblemSolution Solve()
     {
       var assignments = GetRandomAssignments(Instance.Size);
       var cost = GetCost(assignments);

@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace QapSolver
 {
-  class QapResultsWriter
+  public class QapResultsWriter
   {
     private string Path { get; set; }
     private StreamWriter Writer { get; set; }

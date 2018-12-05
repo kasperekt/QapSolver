@@ -1,30 +1,46 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using QapSolver.Solvers;
 
 namespace QapSolver
 {
-  class Program
+  static class Program
   {
-    static QapFileLoader Loader { get; set; }
+    private static QapFileLoader Loader { get; set; }
 
-    static void Main(string[] args)
+    private static void Main(string[] args)
     {
       Loader = new QapFileLoader("./Data");
       var fileNames = GetFileNames("./Data");
-      TestAllFiles(fileNames);
+//      TestAllFiles(fileNames);
+      
+      TestSingleSolver<QapTabooSearch>("chr18a.dat", 100);
+      TestSingleSolver<QapLocalSolverSteepest>("chr18a.dat", 100);
     }
+    
 
-    static string[] GetFileNames(string directoryPath)
+    private static IEnumerable<string> GetFileNames(string directoryPath)
     {
-      DirectoryInfo dInfo = new DirectoryInfo(directoryPath);
-      FileInfo[] datFiles = dInfo.GetFiles("*.dat");
-      string[] fileNames = datFiles.Select(d => d.Name).ToArray();
+      var dInfo = new DirectoryInfo(directoryPath);
+      var datFiles = dInfo.GetFiles("*.dat");
+      var fileNames = datFiles.Select(d => d.Name).ToArray();
       return fileNames;
     }
 
-    static void TestAllFiles(string[] fileNames)
+    private static void TestSingleSolver<T>(string fileName, int rounds = 300) where T: QapProblemSolver
+    {
+      var problemInstance = Loader.Load(fileName);
+      
+      QapProblemSolver solver = Activator.CreateInstance(typeof(T), problemInstance) as T;
+      
+      var solution = solver?.SolveNTimes(rounds);
+      
+      Console.WriteLine($"({problemInstance.Name}, {solver?.Name}): Cost = {solution?.Cost}");
+    }
+
+    private static void TestAllFiles(IEnumerable<string> fileNames)
     {
       foreach (var fileName in fileNames)
       {
@@ -43,10 +59,10 @@ namespace QapSolver
 
           foreach (var solver in solvers)
           {
-            string csvFileName = $"results/{problemInstance.Name}_{solver.Name}_{rounds}.csv";
-            string slnFileName = $"results/{problemInstance.Name}_{solver.Name}_{rounds}.sln";
+            var csvFileName = $"results/{problemInstance.Name}_{solver.Name}_{rounds}.csv";
+            var slnFileName = $"results/{problemInstance.Name}_{solver.Name}_{rounds}.sln";
 
-            QapResultsWriter resultsWriter = new QapResultsWriter(csvFileName);
+            var resultsWriter = new QapResultsWriter(csvFileName);
             var solution = solver.SolveNTimes(rounds, resultsWriter);
             resultsWriter.CloseWriter();
 

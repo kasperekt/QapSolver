@@ -1,40 +1,32 @@
 using System;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Collections.Generic;
-using System.Diagnostics;
-using QapSolver;
 using ArrayExtensions;
 
 namespace QapSolver.Solvers
 {
-  abstract class QapProblemSolver
+  public abstract class QapProblemSolver
   {
-    public QapProblemInstance Instance { get; private set; }
+    protected QapProblemInstance Instance { get; }
     protected int[,] DeltaTable { get; private set; }
     public abstract string Name { get; }
 
-    public QapProblemSolver(QapProblemInstance instance)
+    protected QapProblemSolver(QapProblemInstance instance)
     {
       Instance = instance;
     }
 
     /// Should set value to Solution variable 
-    public abstract QapProblemSolution Solve();
+    protected abstract QapProblemSolution Solve();
 
-    public QapProblemSolution SolveNTimes(int n)
-    {
-      return SolveNTimes(n, null);
-    }
-
-    public QapProblemSolution SolveNTimes(int n, QapResultsWriter writer)
+    public QapProblemSolution SolveNTimes(int n, QapResultsWriter writer = null)
     {
       QapProblemSolution bestSolution = Solve();
 
       for (int i = 0; i < n; i++)
       {
         var solution = Solve();
-        writer?.WriteResultLine(solution: ref solution);
+        writer?.WriteResultLine(ref solution);
 
         if (solution.Cost < bestSolution.Cost)
         {
@@ -68,24 +60,24 @@ namespace QapSolver.Solvers
       return assignments;
     }
 
-    protected int CalcDelta(int[] assignments, int i, int j)
+    private int CalcDelta(int[] assignments, int i, int j)
     {
       var distances = Instance.Distances;
       var flows = Instance.Flows;
       var size = Instance.Size;
 
-      int Ai = assignments[i];
-      int Aj = assignments[j];
+      var Ai = assignments[i];
+      var Aj = assignments[j];
 
       var gSum = 0;
-      for (int g = 0; g < size; g++)
+      for (var g = 0; g < size; g++)
       {
         if (g == i || g == j)
         {
           continue;
         }
 
-        int Ag = assignments[g];
+        var Ag = assignments[g];
 
         gSum += (distances[g, i] - distances[g, j]) * (flows[Ag, Aj] - flows[Ag, Ai]) +
                 (distances[i, g] - distances[j, g]) * (flows[Aj, Ag] - flows[Ai, Ag]);
@@ -99,7 +91,7 @@ namespace QapSolver.Solvers
     /// TODO
     protected void CalcDeltaSwap(int[] assignments, int i, int j)
     {
-      int ijSwap = -DeltaTable[i, j];
+      var ijSwap = -DeltaTable[i, j];
     }
 
     protected void CalcDeltaTable(int[] assignments)
@@ -110,22 +102,22 @@ namespace QapSolver.Solvers
 
       DeltaTable = new int[size, size];
 
-      for (int i = 0; i < size; i++)
+      for (var i = 0; i < size; i++)
       {
-        for (int j = 0; j < size; j++)
+        for (var j = 0; j < size; j++)
         {
           DeltaTable[i, j] = CalcDelta(assignments, i, j);
         }
       }
     }
 
-    protected List<(int, int)> GetSwaps()
+    protected IEnumerable<(int, int)> GetSwaps()
     {
       var swaps = new List<(int, int)>();
 
-      for (int i = 0; i < Instance.Size; i++)
+      for (var i = 0; i < Instance.Size; i++)
       {
-        for (int j = i + 1; j < Instance.Size; j++)
+        for (var j = i + 1; j < Instance.Size; j++)
         {
           swaps.Add((i, j));
         }
