@@ -14,11 +14,11 @@ namespace QapSolver
     {
       Loader = new QapFileLoader("./Data");
       var fileNames = GetFileNames("./Data");
-//      TestAllFiles(fileNames);
+      TestAllFiles(fileNames);
       
-      TestSingleSolver<QapSimulatedAnnealing>("chr18a.dat", 100);
-      TestSingleSolver<QapTabooSearch>("chr18a.dat", 100);
-      TestSingleSolver<QapLocalSolverSteepest>("chr18a.dat", 100);
+//      TestSingleSolver<QapSimulatedAnnealing>("chr18a.dat", 100);
+//      TestSingleSolver<QapTabooSearch>("chr18a.dat", 100);
+//      TestSingleSolver<QapLocalSolverSteepest>("chr18a.dat", 100);
     }
     
 
@@ -45,17 +45,19 @@ namespace QapSolver
     {
       foreach (var fileName in fileNames)
       {
-        int[] differentRounds = { 100, 150, 200, 250, 300 };
+        int[] differentRounds = { 300 };
 
         foreach (var rounds in differentRounds)
         {
           var problemInstance = Loader.Load(fileName);
 
           QapProblemSolver[] solvers = {
-            new QapRandomSolver(problemInstance),
-            new QapHeuristicSolver(problemInstance),
-            new QapLocalSolverGreedy(problemInstance),
-            new QapLocalSolverSteepest(problemInstance)
+//            new QapRandomSolver(problemInstance),
+//            new QapHeuristicSolver(problemInstance),
+//            new QapLocalSolverGreedy(problemInstance),
+//            new QapLocalSolverSteepest(problemInstance),
+//            new QapTabooSearch(problemInstance), 
+            new QapSimulatedAnnealing(problemInstance)
           };
 
           foreach (var solver in solvers)

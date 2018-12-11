@@ -11,8 +11,8 @@ namespace QapSolver.Solvers
 
         public override string Name => "simulated-annealing";
         private const double Eps = 1e-3;
-        private const double Alpha = 0.999;
-        private const double InitialTemperature = 8000.0;
+        private const double Alpha = 0.98;
+        private const double InitialTemperature = 850.0;
         private readonly Random _random = new Random();
         
         protected override QapProblemSolution Solve()
@@ -29,7 +29,7 @@ namespace QapSolver.Solvers
 
             var visited = 0;
             var steps = 0;
-            var temperature = InitialTemperature;
+            var temperature = Instance.Size * InitialTemperature;
             
             while (temperature > Eps)
             {
