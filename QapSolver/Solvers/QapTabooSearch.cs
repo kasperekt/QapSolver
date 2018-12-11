@@ -37,9 +37,13 @@ namespace QapSolver.Solvers
         {
             var attempts = 0;
             
+            var watch = System.Diagnostics.Stopwatch.StartNew();
             var bestAssignments = GetRandomAssignments(Instance.Size);
-            var bestCost = GetCost(bestAssignments);
-            
+            var initialCost = GetCost(bestAssignments);
+            var bestCost = initialCost;
+
+            var steps = 0;
+            var visited = 0;
             var tabooList = new TabooList(5);
             var bestCandidateAssignments = bestAssignments.Clone() as int[];
             var bestCandidateCost = bestCost;
@@ -62,6 +66,8 @@ namespace QapSolver.Solvers
                         bestCandidateCost += deltaSwapValue;
                         CalcDeltaTable(bestCandidateAssignments);
                     }
+
+                    visited++;
                 }
 
                 if (!bestSwap.HasValue)
@@ -76,11 +82,20 @@ namespace QapSolver.Solvers
                     bestAssignments = bestCandidateAssignments.Clone() as int[];
                     bestCost = bestCandidateCost;
                     attempts = 0;
+                    steps++;
                 }
             }
             
+            watch.Stop();
 
-            return new QapProblemSolution(bestAssignments, GetCost(bestAssignments));
+            return new QapProblemSolution(
+                bestAssignments,
+                initialCost,
+                bestCost,
+                steps,
+                visited,
+                watch.ElapsedMilliseconds
+            );
         }
     }
 }

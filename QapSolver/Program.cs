@@ -16,6 +16,7 @@ namespace QapSolver
       var fileNames = GetFileNames("./Data");
 //      TestAllFiles(fileNames);
       
+      TestSingleSolver<QapSimulatedAnnealing>("chr18a.dat", 100);
       TestSingleSolver<QapTabooSearch>("chr18a.dat", 100);
       TestSingleSolver<QapLocalSolverSteepest>("chr18a.dat", 100);
     }

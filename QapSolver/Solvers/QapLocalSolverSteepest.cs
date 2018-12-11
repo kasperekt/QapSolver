@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using QapSolver;
 using ArrayExtensions;
@@ -67,24 +66,6 @@ namespace QapSolver.Solvers
         visited,
         watch.ElapsedMilliseconds
       );
-    }
-
-    private List<int[]> GetNeighbours(int[] assignments)
-    {
-      List<int[]> neighbours = new List<int[]>();
-
-      for (int i = 0; i < assignments.Length; i++)
-      {
-        for (int j = i + 1; j < assignments.Length; j++)
-        {
-          var neighbour = (assignments.Clone() as int[]);
-          neighbour.Swap(i, j);
-
-          neighbours.Add(neighbour);
-        }
-      }
-
-      return neighbours;
     }
   }
 }

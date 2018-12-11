@@ -111,7 +111,7 @@ namespace QapSolver.Solvers
       }
     }
 
-    protected IEnumerable<(int, int)> GetSwaps()
+    protected List<(int, int)> GetSwaps()
     {
       var swaps = new List<(int, int)>();
 
