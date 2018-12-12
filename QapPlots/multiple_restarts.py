@@ -54,18 +54,27 @@ def get_results(file):
 
 algs = {
     'local-greedy-solver': {
-        'label': 'greedy',
-        'linestyle': 'solid'
-
+        'label': 'LG',
+        'linestyle': 'solid',
+        'color': 'g'
     },
     'local-steepest-solver': {
-        'label': 'steepest',
-        'linestyle': 'dashed'
+        'label': 'LS',
+        'linestyle': 'dashed',
+        'color': 'y'
+    },
+    'simulated-annealing': {
+        'label': 'SA',
+        'linestyle': 'dashed',
+        'color': 'b'
+    },
+    'taboo': {
+        'label': 'TS',
+        'linestyle': 'dashed',
+        'color': 'r'
     }
 }
 
-all_problems = ['chr18a', 'chr20a', 'esc32g',
-                'lipa50a', 'tai12a', 'tai12b', 'tai15a', 'tai35b']
 selected_problems = ['tai12a', 'tai35b']
 size = 300
 plt.figure(figsize=chart_size, dpi=chart_dpi)
@@ -87,11 +96,18 @@ for problem in selected_problems:
 
     for alg in algs.keys():
         plt.plot(x, alg_results[alg]['best'],
-                 label=algs[alg]['label'] + "_" + problem + "_" + 'best', alpha=0.8, linestyle=algs[alg]['linestyle'])
+                 label=algs[alg]['label'] + "_" + problem + "_" + 'best',
+                 alpha=0.8,
+                 color=algs[alg]['color'],
+                 linestyle='solid')
 
     for alg in algs.keys():
         plt.plot(x, alg_results[alg]['avg'],
-                 label=algs[alg]['label'] + "_" + problem + "_" + 'avg', alpha=0.8, linestyle=algs[alg]['linestyle'])
+                 label=algs[alg]['label'] + "_" + problem + "_" + 'avg',
+                 alpha=0.8,
+                 color=algs[alg]['color'],
+                 linestyle='dashed')
+
 
 plt.xlabel('liczba iteracji')
 plt.ylabel('jakość rozwiązania')

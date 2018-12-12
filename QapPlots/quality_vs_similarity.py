@@ -46,26 +46,36 @@ def parse_optimal_solution(data):
 
 algs = {
     'local-greedy-solver': {
-        'label': 'greedy',
-        'marker': 'o'
+        'label': 'LG',
+        'color': 'g'
     },
     'local-steepest-solver': {
-        'label': 'steepest',
-        'marker': 'o'
-
+        'label': 'LS',
+        'color': 'y'
     },
     'heuristic-solver': {
-        'label': 'heuristic',
-        'marker': 'o'
+        'label': 'HS',
+        'color': 'm'
     },
     'random-solver': {
-        'label': 'random',
-        'marker': 'o'
+        'label': 'RS',
+        'color': 'k'
+    },
+    'simulated-annealing': {
+        'label': 'SA',
+        'color': 'b'
+    },
+    'taboo': {
+        'label': 'TS',
+        'color': 'r'
     }
 }
 
-all_problems = ['chr18a', 'chr20a', 'esc32g',
-                'lipa50a', 'tai12a', 'tai12b', 'tai15a', 'tai35b']
+problem_markers = {
+    'chr18a': '*',
+    'chr20a': '^'
+}
+
 selected_problems = ['chr18a', 'chr20a']
 size = 300
 plt.figure(figsize=chart_size, dpi=chart_dpi)
@@ -87,9 +97,11 @@ for problem in selected_problems:
 
     for alg in algs.keys():
         plt.scatter(alg_results[alg]['quality'], alg_results[alg]['similarity'],
-                    label=algs[alg]['label'] + "_" + problem, marker=algs[alg]['marker'],
+                    label=algs[alg]['label'] + "_" + problem,
+                    marker=problem_markers[problem],
+                    color=algs[alg]['color'],
                     alpha=0.75,
-                    s=200)
+                    s=150)
 
 
 plt.xlabel('jakość rozwiązania')

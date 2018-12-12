@@ -29,7 +29,7 @@ def get_results(file):
     x = []
     y = []
     for i, line in enumerate(data.split('\n')):
-        if i == 0 or i == (size+1):
+        if i == 0 or i == (size + 1):
             continue
 
         parsed = line.split(',')
@@ -41,19 +41,37 @@ def get_results(file):
 
 algs = {
     'local-greedy-solver': {
-        'label': 'greedy',
-        'marker': 'v'
+        'label': 'LG',
+        'marker': 'v',
+        'color': 'g'
     },
     'local-steepest-solver': {
-        'label': 'steepest',
-        'marker': '^'
+        'label': 'LS',
+        'marker': '^',
+        'color': 'y'
+    },
+    'simulated-annealing': {
+        'label': 'SA',
+        'marker': '*',
+        'color': 'b'
+    },
+    'taboo': {
+        'label': 'TS',
+        'marker': 'p',
+        'color': 'r'
     }
 }
 
-all_problems = ['chr18a', 'chr20a', 'esc32g',
-                'lipa50a', 'tai12a', 'tai12b', 'tai15a', 'tai35b']
+problem_markers = {
+    'chr18a': '*',
+    'esc32g': 'p',
+    'lipa50a': '^',
+    'tai12a': '.',
+    'tai12b': 'v'
+}
+
 selected_problems = ['chr18a', 'esc32g', 'lipa50a', 'tai12a', 'tai12b']
-size = 200
+size = 300
 plt.figure(figsize=chart_size, dpi=chart_dpi)
 
 for problem in selected_problems:
@@ -70,9 +88,14 @@ for problem in selected_problems:
         alg_results[alg]['final'] = list(
             map(lambda y: quality(y, optimal_score), alg_data_y))
 
+        alg_results[alg]['initial'] = alg_results[alg]['initial'][::3]
+        alg_results[alg]['final'] = alg_results[alg]['final'][::3]
+
     for alg in algs.keys():
         plt.scatter(alg_results[alg]['initial'], alg_results[alg]['final'],
-                    label=algs[alg]['label'] + "_" + problem, marker=algs[alg]['marker'],
+                    label=algs[alg]['label'] + "_" + problem,
+                    marker=problem_markers[problem],
+                    c=algs[alg]['color'],
                     alpha=0.75)
 
 plt.xlabel('Jakość rozwiązania początkowego')

@@ -1,5 +1,6 @@
 solvers = ['random-solver', 'heuristic-solver',
-           'local-greedy-solver', 'local-steepest-solver']
+           'local-greedy-solver', 'local-steepest-solver',
+           'taboo', 'simulated-annealing']
 # rounds = [100, 150, 200, 250, 300]
 rounds = [300]
 instances = ['chr18a', 'chr20a', 'tai12a', 'tai12b',
